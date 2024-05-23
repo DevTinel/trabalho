@@ -5,8 +5,8 @@ import java.util.Iterator;
 public class NodePositionList<E> implements PositionList<E> {
 	protected int numElts; // Número de elementos na lista
 	protected DNode<E> header, trailer; // Sentinelas especiais
-// Construtor que cria uma lista vazia
 
+	// Construtor que cria uma lista vazia
 	public NodePositionList() {
 		numElts = 0;
 		header = new DNode<E>(null, null, null); // cria a cabeça
@@ -14,8 +14,8 @@ public class NodePositionList<E> implements PositionList<E> {
 		header.setNext(trailer); // faz a cabeça e a cauda apontarem uma para a outra
 	}
 
-// Verifica se a posição é válida para esta lista e a converte para DNode se for válida
-// é protegido, nao aparece pro usuario.
+	// Verifica se a posição é válida para esta lista e a converte para DNode se for
+	// válida
 	protected DNode<E> checkPosition(Position<E> p) throws InvalidPositionException {
 		if (p == null)
 			throw new InvalidPositionException("Null position passed to NodeList");
@@ -25,10 +25,10 @@ public class NodePositionList<E> implements PositionList<E> {
 			throw new InvalidPositionException("The trailer node is not a valid position");
 		try {
 			DNode<E> temp = (DNode<E>) p; // converto o p para o tipo Dnode, conversão implicida, pois Dnode implementa
-											// position
+			// position
 			if ((temp.getPrev() == null) || (temp.getNext() == null)) // Agora tem prev e next, se qualquer um for nulo,
-																		// é um erro, so heade e tail tem nulo emm
-																		// alguma poisção.
+				// é um erro, so heade e tail tem nulo emm
+				// alguma poisção.
 				throw new InvalidPositionException("Position does not belong to a valid NodeList");
 			return temp;
 		} catch (ClassCastException e) {
@@ -36,24 +36,24 @@ public class NodePositionList<E> implements PositionList<E> {
 		}
 	}
 
-// Retorna a quantidade de elementos na lista
+	// Retorna a quantidade de elementos na lista
 	public int size() {
 		return numElts;
 	}
 
-// Retorna quando a lista esta vazia
+	// Retorna quando a lista esta vazia
 	public boolean isEmpty() {
 		return (numElts == 0);
 	}
 
-//Retorna a primeira posição da lista
+	// Retorna a primeira posição da lista
 	public Position<E> first() throws EmptyListException {
 		if (isEmpty())
 			throw new EmptyListException("List is empty");
 		return header.getNext();
 	}
 
-//Retorna a posição que antecede a fornecida
+	// Retorna a posição que antecede a fornecida
 	public Position<E> prev(Position<E> p) throws InvalidPositionException, BoundaryViolationException {
 		DNode<E> v = checkPosition(p);
 		DNode<E> prev = v.getPrev();
@@ -62,7 +62,7 @@ public class NodePositionList<E> implements PositionList<E> {
 		return prev;
 	}
 
-//Insere o elemento antes da posição fornecida, retornando a nova posição
+	// Insere o elemento antes da posição fornecida, retornando a nova posição
 	public void addBefore(Position<E> p, E element) throws InvalidPositionException {
 		DNode<E> v = checkPosition(p);
 		numElts++;
@@ -71,7 +71,7 @@ public class NodePositionList<E> implements PositionList<E> {
 		v.setPrev(newNode); //
 	}
 
-//Insere o elemento dado no início da lista, retornando a nova posição
+	// Insere o elemento dado no início da lista, retornando a nova posição
 	public void addFirst(E element) {
 		numElts++;
 		DNode<E> newNode = new DNode<E>(header, header.getNext(), element);
@@ -79,7 +79,7 @@ public class NodePositionList<E> implements PositionList<E> {
 		header.setNext(newNode);
 	}
 
-//Remove da lista a posição fornecida
+	// Remove da lista a posição fornecida
 	public E remove(Position<E> p) throws InvalidPositionException {
 		DNode<E> v = checkPosition(p);
 		numElts--;
@@ -94,7 +94,8 @@ public class NodePositionList<E> implements PositionList<E> {
 		return vElem;
 	}
 
-//Substitui o elemento da posição fornecida por um novo e retorna o elemento velho
+	// Substitui o elemento da posição fornecida por um novo e retorna o elemento
+	// velho
 	public E set(Position<E> p, E element) throws InvalidPositionException {
 		DNode<E> v = checkPosition(p);
 		E oldElt = v.element();
@@ -102,14 +103,14 @@ public class NodePositionList<E> implements PositionList<E> {
 		return oldElt;
 	}
 
-//Retorna o último nodo da lista.
+	// Retorna o último nodo da lista.
 	public Position<E> last() {
 		if (isEmpty())
 			throw new EmptyListException("List is empty");
 		return trailer.getPrev();
 	}
 
-//Retorna o nodo que segue um dado nodo da lista.
+	// Retorna o nodo que segue um dado nodo da lista.
 	public Position<E> next(Position<E> p) throws InvalidPositionException, BoundaryViolationException {
 		DNode<E> v = checkPosition(p);
 		DNode<E> next = v.getNext();
@@ -118,7 +119,7 @@ public class NodePositionList<E> implements PositionList<E> {
 		return next;
 	}
 
-//Insere um elemento na última posição, retornando uma posição nova.
+	// Insere um elemento na última posição, retornando uma posição nova.
 	public void addLast(E e) {
 		numElts++;
 		DNode<E> newNode = new DNode<E>(trailer.getPrev(), trailer, e);
@@ -126,7 +127,7 @@ public class NodePositionList<E> implements PositionList<E> {
 		trailer.setPrev(newNode);
 	}
 
-//Insere um elemento após um dado elemento da lista.
+	// Insere um elemento após um dado elemento da lista.
 	public void addAfter(Position<E> p, E e) throws InvalidPositionException {
 		DNode<E> v = checkPosition(p);
 		numElts++;
@@ -135,7 +136,7 @@ public class NodePositionList<E> implements PositionList<E> {
 		v.setNext(newNode);
 	}
 
-//Retorna a representação textual de uma lista de nodos
+	// Retorna a representação textual de uma lista de nodos
 	public static <E> String toString(PositionList<E> l) {
 		String s = "";
 		for (E i : l) {
@@ -145,12 +146,17 @@ public class NodePositionList<E> implements PositionList<E> {
 		return "[" + s + "]";
 	}
 
-//Retorna o iterator a partir do ElemenIterator.
+	// Retorna o iterator a partir do ElemenIterator.
 	public Iterator<E> iterator() {
 		return new ElementIterator<E>(this);
 	}
 
 	public String toString() {
 		return toString(this);
+	}
+
+	// Método para calcular a expressão matemática
+	public double calculateExpression() {
+		return (((5 + 2) * (2 - 1)) / ((double) (2 + 9) + (7 - 2) - 1)) * 8;
 	}
 }
